@@ -40,7 +40,7 @@ def scan_registers(start_addr: int = 0x0000, end_addr: int = 0xFFFF) -> List[int
     valid_addresses =[]
     logging.info("Начинаем сканирование пространства от 0x%04X до 0x%04X...", start_addr, end_addr)
 
-    for addr in range(start_addr, end_addr + 1):
+    for addr in range(start_addr, end_addr + 1,4):
         try:
             # Делаем безопасное чтение. Дефолтные данные = 0, ширина = 32
             response = riscv_reg_access(addr=addr, data=0, rw="read", bus_width=32)
