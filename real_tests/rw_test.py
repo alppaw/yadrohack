@@ -9,7 +9,7 @@ def uart_read(addr):
     res = reg_access(addr, 0, "read")
     
     # 1. Извлекаем поле 'data'
-    val = res.get('data', 0)
+    val = res.get('reg_value', 0)
     
     # 2. Если 'data' оказался словарем, достаем из него 'value' или первое значение
     if isinstance(val, dict):
@@ -21,7 +21,7 @@ def uart_read(addr):
 def uart_write(addr, data):
     # Убеждаемся, что передаем в reg_access именно число
     if isinstance(data, dict):
-        data = data.get('value', data)
+        data = data.get('reg_value', data)
     return reg_access(addr, int(data), "write")
 
 def calculate_crc8(data: list) -> int:

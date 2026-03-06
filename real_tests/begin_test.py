@@ -34,7 +34,7 @@ EXPECTED_RESET = {
 def check_lsr(context: str):
     """Служебная функция для проверки LSR в любой момент"""
     res = reg_access(REG_MAP["LSR"], 0, "read")
-    val = res.get('data', 0)
+    val = res.get('reg_value', 0)
     # Проверяем, что нет ошибок (OE, PE, FE, BI) и TX пуст
     # Ожидаем 0x60 (THRE=1, TEMT=1)
     if (val & 0x7F) != 0x60:
@@ -56,7 +56,7 @@ def test_reset_values():
         
         # Читаем целевой регистр
         resp = reg_access(addr, 0, "read")
-        actual_val = resp.get('data', 0)
+        actual_val = resp.get('reg_value', 0)
         
         # Проверяем на соответствие
         if reg_name in EXPECTED_RESET:
@@ -83,7 +83,7 @@ def test_reset_values():
     for reg_name in ["DLL", "DLM"]:
         addr = REG_MAP[reg_name]
         resp = reg_access(addr, 0, "read")
-        val = resp.get('data', 0)
+        val = resp.get('reg_value', 0)
         print(f"[OK] {reg_name} (DLAB=1): {hex(val)}")
         if (val >> 8) != 0:
             print(f"[FAIL] {reg_name}: Reserved bits [31:8] not zero")
