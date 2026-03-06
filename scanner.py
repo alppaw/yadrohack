@@ -8,6 +8,7 @@ import json
 import logging
 from typing import List
 
+
 # Настройка логирования для красивого вывода в консоль
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
@@ -17,15 +18,15 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 # и РАСКОММЕНТИРУЙТЕ строку импорта ниже:
 # from riscv_reg_block import riscv_reg_access
 # =====================================================================
-def riscv_reg_access(addr: int, data: int, rw: str, bus_width: int = 32) -> dict:
-    """Временный 'черный ящик' для проверки работы сканера."""
-    # Имитируем, что валидные регистры идут с шагом 4 (типично для 32-bit систем)
-    # И добавим искусственно адреса с багами из ТЗ (0x13, 0x42, 0x77)
-    valid_mock_addrs =[0x13, 0x42, 0x77]
-    if (addr % 4 == 0 and addr <= 0x0A00) or addr in valid_mock_addrs:
-        return {'reg_value': 0, 'status': 'OK', 'ack': True}
-    return {'reg_value': 0, 'status': 'ERROR', 'ack': False}
-# =====================================================================
+# def riscv_reg_access(addr: int, data: int, rw: str, bus_width: int = 32) -> dict:
+#     """Временный 'черный ящик' для проверки работы сканера."""
+#     # Имитируем, что валидные регистры идут с шагом 4 (типично для 32-bit систем)
+#     # И добавим искусственно адреса с багами из ТЗ (0x13, 0x42, 0x77)
+#     valid_mock_addrs =[0x13, 0x42, 0x77]
+#     if (addr % 4 == 0 and addr <= 0x0A00) or addr in valid_mock_addrs:
+#         return {'reg_value': 0, 'status': 'OK', 'ack': True}
+#     return {'reg_value': 0, 'status': 'ERROR', 'ack': False}
+# # =====================================================================
 
 
 def scan_registers(start_addr: int = 0x0000, end_addr: int = 0xFFFF) -> List[int]:
