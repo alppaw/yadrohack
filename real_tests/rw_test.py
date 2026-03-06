@@ -70,23 +70,23 @@ def run_parameter_suite():
             data_v2 = [random.randint(0, 255) for _ in range(3)]
             
             # --- ШАГ 1: ЗАПИСЬ И ЧТЕНИЕ ПЕРВОГО НАБОРА ---
-            packet1 = get_packet(addr=0x20, cmd=0x02, data_bytes=data_v1)
+            packet1 = get_packet(addr=8, cmd=0x02, data_bytes=data_v1)
             send_and_verify(packet1, "First Write")
             
             # --- ШАГ 2: ЗАПИСЬ И ЧТЕНИЕ ВТОРОГО НАБОРА (Проверка обновления) ---
-            packet2 = get_packet(addr=0x20, cmd=0x02, data_bytes=data_v2)
+            packet2 = get_packet(addr=8, cmd=0x02, data_bytes=data_v2)
             send_and_verify(packet2, "Second Write (New Data)")
 
 def setup_uart(dll, dlm, lcr):
     """Инициализация контроллера"""
-    uart_write(0x0C, 0x80) # DLAB=1
-    uart_write(0x04, dll)
-    uart_write(0x08, dlm)
-    uart_write(0x0C, lcr)  # DLAB=0 + формат кадра
-    uart_write(0x18, 0x00) # FIFO OFF
+    uart_write(3, 0x80) # DLAB=1
+    uart_write(1, dll)
+    uart_write(2, dlm)
+    uart_write(3, lcr)  # DLAB=0 + формат кадра
+    uart_write(6, 0x00) # FIFO OFF
     
     # Проверка LSR после инициализации
-    lsr = uart_read(0x1C)
+    lsr = uart_read(3)
     if not (lsr & 0x60): # THRE и TEMT должны быть 1
         print(f"    [WARN] UART не готов после сброса: LSR={hex(lsr)}")
 
@@ -96,7 +96,7 @@ def send_and_verify(packet, label):
     
     for i, byte_to_send in enumerate(packet):
         # Ждем пока передатчик освободится
-        if not wait_for_bit(0x1C, 0x20): # LSR[5] (THRE)
+        if not wait_for_bit(3, 0x20): # LSR[5] (THRE)
             print(f"    [ERR] {label}: TX Timeout на байте {i}")
             return False
         
@@ -104,7 +104,7 @@ def send_and_verify(packet, label):
         uart_write(0x00, byte_to_send)
         
         # Ждем появления данных в приемнике
-        if not wait_for_bit(0x1C, 0x01): # LSR[0] (DR)
+        if not wait_for_bit(3, 0x01): # LSR[0] (DR)
             print(f"    [ERR] {label}: RX Timeout на байте {i}")
             return False
             
@@ -113,7 +113,7 @@ def send_and_verify(packet, label):
         received.append(byte_received)
         
         # Проверка ошибок линии в процессе
-        lsr = uart_read(0x1C)
+        lsr = uart_read(3)
         if lsr & 0x0E: # OE, PE, FE
             print(f"    [ERR] {label}: Ошибка LSR={hex(lsr)} на байте {hex(byte_to_send)}")
 
@@ -145,8 +145,8 @@ def diagnostic_test():
     # 1. Проверка записи в IER (этот регистр обычно проще всего)
     # Запишем туда 0x05 (Enable RX и Error IRQ)
     test_val = 0x05
-    uart_write(0x10, test_val)
-    read_back = uart_read(0x10) & 0xFF
+    uart_write(4, test_val)
+    read_back = uart_read(4) & 0xFF
     
     if read_back == test_val:
         print(f"[OK] Шина работает: Записано в IER {hex(test_val)}, прочитано {hex(read_back)}")
@@ -155,10 +155,10 @@ def diagnostic_test():
         return
 
     # 2. Проверка DLAB и делителя DLL
-    uart_write(0x0C, 0x80) # Включаем DLAB
-    uart_write(0x04, 0xAA) # Пишем в DLL
-    dll_val = uart_read(0x04) & 0xFF
-    uart_write(0x0C, 0x00) # Выключаем DLAB
+    uart_write(3, 0x80) # Включаем DLAB
+    uart_write(1, 0xAA) # Пишем в DLL
+    dll_val = uart_read(1) & 0xFF
+    uart_write(3, 0x00) # Выключаем DLAB
     
     if dll_val == 0xAA:
         print(f"[OK] Регистры делителя (DLL) работают и DLAB переключается")
@@ -166,7 +166,7 @@ def diagnostic_test():
         print(f"[FAIL] Ошибка DLAB или DLL: Прочитано {hex(dll_val)} вместо 0xAA")
 
     # 3. Анализ LSR
-    lsr = uart_read(0x1C)
+    lsr = uart_read(3)
     print(f"Текущий LSR: {hex(lsr)}")
     if not (lsr & 0x20):
         print("[!] ВНИМАНИЕ: Бит THRE (5-й) равен 0. Контроллер считает, что передатчик занят.")

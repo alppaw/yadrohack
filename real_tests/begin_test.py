@@ -5,16 +5,16 @@ from typing import Dict, Any, List
 
 # --- Константы из спецификации ---
 REG_MAP = {
-    "RBR_THR": 0x00,
-    "DLL":     0x04, # DLAB=1
-    "DLM":     0x08, # DLAB=1
-    "LCR":     0x0C,
-    "IER":     0x10,
-    "IIR":     0x14,
-    "FCR":     0x18,
-    "LSR":     0x1C,
-    "MCR":     0x20,
-    "MSR":     0x24,
+    "RBR_THR": 0x00,  
+    "DLL":     0x04, # DLAB=1   1
+    "DLM":     0x08, # DLAB=1   2
+    "LCR":     0x0C, #          3
+    "IER":     0x10, #         4
+    "IIR":     0x14, #         5
+    "FCR":     0x18,#          6
+    "LSR":     0x1C,#          7
+    "MCR":     0x20,#          8
+    "MSR":     0x24,#          9
 }
 
 # Ожидаемые значения после сброса (согласно спецификации)
