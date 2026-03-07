@@ -1,7 +1,7 @@
 import random
 import logging
 import importlib
-import riscv_reg_block
+import riscv
 
 # --- КОНФИГУРАЦИЯ ЛОГИРОВАНИЯ ---
 
@@ -21,14 +21,14 @@ details_logger.addHandler(console_handler)
 def run_stress_test(iterations=65000):
     details_logger.info(f"Запуск стресс-теста: {iterations} итераций...")
 
-    importlib.reload(riscv_reg_block)
-    
+    importlib.reload(riscv)
+
     # 3. ЛОКАЛЬНЫЕ ОБЕРТКИ (создаются 1 раз для этого теста)
     def uart_write(byte_addr, data):
-        return riscv_reg_block.reg_access(byte_addr // 4, data, "write")
+        return riscv.reg_access(byte_addr // 4, data, "write")
 
     def uart_read(byte_addr):
-        return riscv_reg_block.reg_access(byte_addr // 4, 0, "read")
+        return riscv.reg_access(byte_addr // 4, 0, "read")
     # =========================================================
     shadow_memory = [0] * 16
     

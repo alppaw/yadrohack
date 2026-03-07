@@ -1,4 +1,4 @@
-from riscv_reg_block import reg_access
+from riscv import reg_access
 
 from typing import Dict, Any, List
 
