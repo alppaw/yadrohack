@@ -7,7 +7,7 @@ st.set_page_config(page_title="Register Heatmap Log", layout="wide")
 st.title("Лог ошибок регистров (Heatmap)", text_alignment="center")
 
 # 1. Чтение данных из текстового файла
-file_path = "log.txt"
+file_path = "uart_final_summary.txt"
 
 # Инициализация массивов
 addresses = []
