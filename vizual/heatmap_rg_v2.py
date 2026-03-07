@@ -13,9 +13,9 @@ file_path = "log.txt"
 addresses = []
 writes_data = []
 reads_data = []
-errors_data = [] # Список списков [ro, mism, sticky, dead, ovf, unexp]
+errors_data = [] 
 
-# Названия колонок ошибок (соответствуют столбцам в txt после Reads)
+# Названия колонок ошибок
 error_names = ["RO Denied", "Mismatch", "Sticky", "Deadlock", "Overflow", "Unexp"]
 summary_lines = []
 
@@ -30,7 +30,6 @@ try:
         if not line:
             continue
             
-        # Сбор сводной статистики (все, что до таблицы)
         if "Адрес" in line and "|" in line:
             is_parsing_table = True
             continue
@@ -40,31 +39,17 @@ try:
         if not is_parsing_table:
             summary_lines.append(line)
         else:
-            # Парсинг строк таблицы: 0x00 | 207 | ...
             if line.startswith("0x"):
                 parts = [p.strip() for p in line.split('|')]
-                # parts[0] = Address
-                # parts[1] = Writes
-                # parts[2] = Reads
-                # parts[3] = RO Denied
-                # parts[4] = Mismatch
-                # parts[5] = Sticky
-                # parts[6] = Deadlock
-                # parts[7] = Overflow
-                # parts[8] = Unexp
-                
                 if len(parts) >= 9:
                     addresses.append(parts[0])
                     writes_data.append(parts[1])
                     reads_data.append(parts[2])
-                    
-                    # Собираем ошибки в список чисел
-                    # Порядок: RO, Mism, Sticky, Dead, Ovf, Unexp
                     row_bugs = [int(parts[i]) for i in range(3, 9)]
                     errors_data.append(row_bugs)
 
 except FileNotFoundError:
-    st.error(f"Файл {file_path} не найден! Пожалуйста, создайте файл с логом.")
+    st.error(f"Файл {file_path} не найден! Создайте файл log.txt рядом со скриптом.")
     st.stop()
 except Exception as e:
     st.error(f"Ошибка при чтении файла: {e}")
@@ -79,15 +64,12 @@ if summary_lines:
 num_registers = len(addresses)
 num_errors = len(error_names)
 
-# Собираем все значения ошибок в один плоский список для поиска min/max
 all_bugs_flat = [val for row in errors_data for val in row]
-
-# Находим минимум и максимум (без учета нулей, чтобы не ломать градиент)
 non_zero_bugs = [b for b in all_bugs_flat if b > 0]
 global_min = min(non_zero_bugs) if non_zero_bugs else 0
 global_max = max(non_zero_bugs) if non_zero_bugs else 1
 
-# 3. Структура NetworkX
+# 3. Структура NetworkX (для удобства хранения, можно и без нее, но оставляем структуру)
 G = nx.grid_2d_graph(num_errors, num_registers)
 for x in range(num_errors):
     for y in range(num_registers):
@@ -95,7 +77,6 @@ for x in range(num_errors):
         G.nodes[(x, y)]['bug_name'] = error_names[x]
 
 # 4. ПАЛИТРЫ
-# Зеленая (для RO Denied)
 green_colors = [
     "#112a14", "#163619", "#1c431f", "#225025", "#285e2c",
     "#2e6c32", "#357b39", "#3d8a41", "#449948", "#4ca950",
@@ -103,7 +84,6 @@ green_colors = [
     "#a1e7a2", "#b2efb3", "#c4f6c4", "#d5fcd5", "#e1fde1", "#edffed"
 ]
 
-# Красная (для остальных ошибок)
 red_colors = [
     "#3a0000", "#4d0000", "#600000", "#730000", "#860000",
     "#990000", "#ac0000", "#bf0000", "#d20000", "#e60000",
@@ -112,10 +92,11 @@ red_colors = [
 ]
 
 # 5. CSS Стили
-# Немного адаптируем grid-template-columns под новое количество столбцов (3 инфо + 6 ошибок)
 css = """
 <style>
+    /* Разрешаем элементам выходить за границы контейнеров Streamlit */
     .stApp { overflow: visible !important; }
+    div[data-testid="stBlock"] { overflow: visible !important; }
     
     .main-layout {
         display: flex;
@@ -129,11 +110,11 @@ css = """
 
     .heatmap-container {
         display: grid;
-        /* Address, Writes, Reads, затем 6 колонок ошибок */
         grid-template-columns: 60px 60px 60px repeat(6, 65px);
         gap: 8px; 
         align-items: center;
         position: relative;
+        overflow: visible !important; /* Важно для подсказок */
     }
     
     .grid-header {
@@ -162,9 +143,11 @@ css = """
         width: 65px;  
         height: 48px; 
         margin: 0; 
+        overflow: visible !important; /* Важно, чтобы подсказка не обрезалась */
     }
+    
     .cell-wrapper:hover {
-        z-index: 1000; 
+        z-index: 1000; /* Поднимаем ячейку при наведении */
     }
     
     .grid-cell {
@@ -175,16 +158,19 @@ css = """
         transition: transform 0.1s ease, box-shadow 0.1s ease;
         cursor: pointer;
     }
+    
     .cell-wrapper:hover .grid-cell {
         transform: scale(1.15); 
         border: 2px solid #fff;
         box-shadow: 0px 4px 12px rgba(255, 255, 255, 0.3); 
     }
+    
     .grid-cell-empty {
         background-color: transparent;
         border: 1px dashed #444;
     }
 
+    /* --- СТИЛИ ПОДСКАЗОК (TOOLTIP) --- */
     .custom-tooltip {
         visibility: hidden;
         background-color: #1a1a1a;
@@ -193,11 +179,15 @@ css = """
         border-radius: 6px;
         padding: 8px 12px;
         position: absolute;
-        bottom: 120%; 
+        
+        /* Позиционирование над ячейкой */
+        bottom: 125%; 
         left: 50%;
         transform: translateX(-50%);
+        
         opacity: 0;
-        transition: opacity 0.15s, bottom 0.15s;
+        transition: opacity 0.2s, bottom 0.2s;
+        
         font-size: 13px;
         font-family: sans-serif;
         white-space: nowrap;
@@ -206,23 +196,30 @@ css = """
         box-shadow: 0px 10px 20px rgba(0,0,0,0.9);
         z-index: 99999 !important; 
     }
+    
+    /* Жирный текст внутри подсказки */
     .custom-tooltip b { color: #ffab40; }
+
+    /* Стрелочка вниз у подсказки */
     .custom-tooltip::after {
         content: "";
         position: absolute;
-        top: 100%;
+        top: 100%; /* Внизу блока */
         left: 50%;
         margin-left: -6px;
         border-width: 6px;
         border-style: solid;
         border-color: #555 transparent transparent transparent;
     }
+
+    /* Показ подсказки при наведении на cell-wrapper */
     .cell-wrapper:hover .custom-tooltip {
         visibility: visible;
         opacity: 1;
-        bottom: 130%; 
+        bottom: 135%; /* Немного всплывает вверх */
     }
 
+    /* --- СТИЛИ ЛЕГЕНДЫ --- */
     .legend-wrapper {
         display: flex;
         flex-direction: row;
@@ -248,14 +245,14 @@ css = """
         display: flex;
         align-items: center;
         gap: 6px; 
-        font-size: 15px;
+        font-size: 13px; 
         color: #fff;
         font-family: monospace; 
         font-weight: bold;
     }
     .legend-arrow {
         color: #bbb;
-        font-size: 16px;
+        font-size: 12px;
     }
 </style>
 """
@@ -268,17 +265,14 @@ html_content = '<div class="main-layout">'
 
 # --- ТАБЛИЦА ---
 html_content += '<div class="heatmap-container">'
-html_content += '<div></div>' # Пустой угол
+html_content += '<div></div>'
 html_content += '<div class="grid-header" style="color:#aaa; align-self:end;">Writes</div>'
 html_content += '<div class="grid-header" style="color:#aaa; align-self:end;">Reads</div>'
 
-# Заголовки ошибок
 for name in error_names:
-    # Делаем перенос строк для длинных названий, если нужно
     display_name = name.replace(" ", "<br>")
     html_content += f'<div class="grid-header" style="align-self:end;">{display_name}</div>'
 
-# Тело таблицы
 for y in range(num_registers):
     html_content += f'<div class="grid-text-cell grid-address">{addresses[y]}</div>'
     html_content += f'<div class="grid-text-cell">{writes_data[y]}</div>'
@@ -289,17 +283,19 @@ for y in range(num_registers):
         freq = node_data['freq']
         bug_name = node_data['bug_name']
         
+        # Стандартный title как fallback
         fallback_title = f"{bug_name}: {freq if freq > 0 else 'Ok'}"
+        
         html_content += f'<div class="cell-wrapper" title="{fallback_title}">'
         
         if freq == 0:
             html_content += '<div class="grid-cell grid-cell-empty"></div>'
+            # HTML подсказка
             html_content += f'<span class="custom-tooltip"><b>{bug_name}</b><br>Ошибок нет</span>'
         else:
-            # Расчет интенсивности
             ratio = (freq - global_min) / (global_max - global_min) if global_max > global_min else 1.0
             
-            # ВЫБОР ЦВЕТА: RO Denied (индекс 0) - Зеленый, остальные - Красный
+            # ВЫБОР ЦВЕТА
             if bug_name == "RO Denied":
                 palette = green_colors
             else:
@@ -309,6 +305,7 @@ for y in range(num_registers):
             hex_color = palette[color_index] 
             
             html_content += f'<div class="grid-cell" style="background-color: {hex_color};"></div>'
+            # HTML подсказка
             html_content += f'<span class="custom-tooltip"><b>{bug_name}</b><br>Количество: {freq}</span>'
             
         html_content += '</div>'
@@ -317,17 +314,24 @@ html_content += '</div>'
 
 # --- ЛЕГЕНДА ---
 html_content += '<div class="legend-wrapper">'
-# Зеленая шкала (RO Denied)
 html_content += f'<div class="legend-color-bar" style="background: {gradient_green_css};" title="RO Denied Scale"></div>'
-# Красная шкала (Errors)
 html_content += f'<div class="legend-color-bar" style="background: {gradient_red_css}; margin-left: 8px;" title="Error Scale"></div>'
 
 html_content += '<div class="legend-labels-container">'
 
-# Собираем значения для шкалы: min, max и кратные 500 (или 50 для мелких чисел, если нужно)
-# Здесь оставляем логику кратно 500 из предыдущего примера, но можно адаптировать
+# Генерация частых меток
 legend_values = set([global_min, global_max])
-step = 50 if global_max < 500 else 500 # Адаптивный шаг
+desired_ticks = 40
+step = max(1, int(global_max / desired_ticks))
+
+if step > 100:
+    step = (step // 50) * 50
+elif step > 10:
+    step = (step // 10) * 10
+elif step > 5:
+    step = (step // 5) * 5
+
+if step < 1: step = 1
 
 for v in range(0, global_max + 1, step):
     if v > global_min and v < global_max:
@@ -335,7 +339,6 @@ for v in range(0, global_max + 1, step):
 
 legend_values = sorted(list(legend_values))
 
-# Рисуем подписи 
 for val in legend_values:
     if global_max > global_min:
         percent = (val - global_min) / (global_max - global_min) * 100
@@ -344,8 +347,7 @@ for val in legend_values:
         
     html_content += f'<div class="legend-label" style="bottom: {percent}%;"><span class="legend-arrow">◀</span> {val}</div>'
 
-html_content += '</div></div>' # Закрытие legend
-html_content += '</div>'       # Закрытие main-layout
+html_content += '</div></div>' 
+html_content += '</div>'
 
-# 7. Вывод на экран
 st.markdown(css + html_content, unsafe_allow_html=True)
