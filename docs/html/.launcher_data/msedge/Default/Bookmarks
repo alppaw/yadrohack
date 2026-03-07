@@ -1,0 +1,76 @@
+{
+   "checksum": "f64a169d1cee78e6c321f3229127a9ce",
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "date_added": "13347649431766295",
+            "date_last_used": "0",
+            "guid": "bad5bc09-7b11-4639-afa6-e15b3cd26cac",
+            "id": "8",
+            "meta_info": {
+               "power_bookmark_meta": ""
+            },
+            "name": "фф",
+            "show_icon": false,
+            "source": "sync",
+            "type": "url",
+            "url": "https://yandex.ru/games/app/96860",
+            "visit_count": 0
+         }, {
+            "date_added": "13404923412406205",
+            "date_last_used": "0",
+            "guid": "510a1ba9-9ee2-4397-8c53-9ff9e8302aea",
+            "id": "7",
+            "name": "Яндекс",
+            "show_icon": false,
+            "source": "import_fre",
+            "type": "url",
+            "url": "https://www.ya.ru/?win=720&clid=9183495-138&from=dist_bookmark",
+            "visit_count": 0
+         } ],
+         "date_added": "13417363670753904",
+         "date_last_used": "0",
+         "date_modified": "13347649431766295",
+         "guid": "0bc5d13f-2cba-5d74-951f-3f233fe6c908",
+         "id": "1",
+         "name": "Панель избранного",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "other": {
+         "children": [  ],
+         "date_added": "13417363670753904",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "82b081ec-3dd3-529c-8475-ab6c344590dd",
+         "id": "2",
+         "name": "Другое избранное",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13417363670753904",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "4cf2e351-0e85-532b-bb37-df045d8f8d0f",
+         "id": "3",
+         "name": "Избранное на мобильных устройствах",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "workspaces_v2": {
+         "children": [  ],
+         "date_added": "13417363670753904",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "75aa6670-344f-549d-b742-660f029506ab",
+         "id": "5",
+         "name": "Рабочие пространства",
+         "source": "unknown",
+         "type": "folder"
+      }
+   },
+   "sync_metadata": "CkEKHgiIgQISCNjHe8icAQAAKg4QABgAIAEoBTAAOABAABIAKhg5MGt3OStpNXJLVUVrZlVwbVc4eGRnPT1IA6AGDBKOAQgCEokBChxZY1NUb252RVNQd3FDczRMMmNyVmh2NjhMOTg9EiQ5NWY3ZmQwNy05NDhlLTVkNTUtYmQyMS02YTE3N2Y1MTYxYTQYACAAKAAw0439laAxOPiT/ZWgMUD4k/2VoDFKHG9QVmtod0JSYlY2NUtDV1IyK0lPTkhXb091OD1aAGUAAAAAwj4CYAASrAEIBxKnAQocWHVSZCtOcXNIdWVEZVVmV0YzZm5UN09FU2dNPRIkNTEwYTFiYTktOWVlMi00Mzk3LThjNTMtOWZmOWU4MzAyYWVhGAAgASgBMMOl78PMMziUje/DzDNAlI3vw8wzShxrRHovcGdsUDZyOXZpSFZqNUZOM0QzUmRxTmc9Wh4iHFUrOE1CeG41YjZWbG8xSWRBb0g2K29zQlJRWT1lAAAAAMI+AmACEqwBCAgSpwEKHFlKTHo2Z0pNd1h5QXNCZXYyUFBRdU9veEVEQT0SJGJhZDViYzA5LTdiMTEtNDYzOS1hZmE2LWUxNWIzY2QyNmNhYxgAIAAoADDfvcPpyDE4r6PD6cgxQK+jw+nIMUocK2hHYWJEMzhuL2grNXBVL2R6b0VNbi9tQWNFPVoeIhxTLzk3TjV5NlIvT2plVHdxeUdqb2lSRnVtZWM9ZetanfvCPgJgBRKOAQgDEokBChxuamdEdTg4ZUNydlhwODZwRDdmSEdjcUZwODg9EiQzYTg2NWZjYy02NjYyLTUzYWYtYjc0NC1kZWM0NTAxOGM4Y2QYACAAKAAw2I39laAxOKiU/ZWgMUColP2VoDFKHHl6TkIwMWNuNTRBN2NSVTB1VCsvUGdtVHRVbz1aAGUAAAAAwj4CYAASjgEIARKJAQoceXhKLzZmdmtlY3I3a3A1RVF6QjR0V0xwZGJFPRIkZTQ0ZDU5YWItMDVlMi01MTZiLThiZTgtNmE3YTE0N2E0ZWE4GAAgACgAMNKN/ZWgMTjSk/2VoDFA0pP9laAxShxhUkNXTGdoRjliNUlucUtJRHZ1Si9qdlFrRmM9WgBlAAAAAMI+AmAAEo4BCAUSiQEKHHdSQnJaTCs2UEE5YXZLZ2pOUDdKWERMY2Z2cz0SJGJmMmU3MTE3LTYwNjEtNTY4OC05OTJiLTkzNmE5MzViNDc2MhgAIAAoADCQlvahpTM4g5j2oaUzQIOY9qGlM0ocbm14NjVzUUR2eEk4VGdFZXYrQStudHRvU240PVoAZQAAAADCPgJgADAAOAA=",
+   "version": 1
+}

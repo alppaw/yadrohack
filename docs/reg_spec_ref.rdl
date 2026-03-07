@@ -1,0 +1,147 @@
+addrmap uart_ctrl {
+    name = "UART Controller";
+    desc = "UART controller with 8-bit data support, 32-bit register aliasing, and DLAB access control.";
+
+    addressing = compact;
+    default regwidth = 32; // Все регистры 32-битные на шине
+    default sw = rw;       // По умолчанию доступ чтение/запись
+    default hw = r;        // По умолчанию железо только читает
+
+    /* --- Регистр 0x00: THR / RBR --- */
+    reg {
+        name = "RBR_THR Register";
+        desc = "Transmitter Holding Register (Write) / Receiver Buffer Register (Read). 
+                Data masking depends on LCR.WLS bits (5-8 bits).";
+        
+        field {
+            name = "Data";
+            desc = "UART Data byte. When writing, triggers transmission logic. 
+                    When reading, clears LSR.DR bit.";
+            sw = rw;
+            hw = rw; // Железо обновляет при приеме или читает при передаче
+            reset = 8'h00;
+        } DATA[7:0];
+
+        field {
+            name = "Reserved";
+            sw = r;
+            hw = r;
+        } RSVD[31:8] = 24'h0;
+    } RBR_THR @ 0x00;
+
+    /* --- Регистр 0x04: DLL (DLAB=1) --- */
+    reg {
+        name = "Divisor Latch LSB";
+        desc = "Baud rate divisor least significant byte. Accessible only when LCR.DLAB=1.";
+        field {
+            sw = rw;
+            hw = r;
+            reset = 8'h00;
+        } DATA[7:0];
+    } DLL @ 0x04;
+
+    /* --- Регистр 0x08: DLM (DLAB=1) --- */
+    reg {
+        name = "Divisor Latch MSB";
+        desc = "Baud rate divisor most significant byte. Accessible only when LCR.DLAB=1.";
+        field {
+            sw = rw;
+            hw = r;
+            reset = 8'h00;
+        } DATA[7:0];
+    } DLM @ 0x08;
+
+    /* --- Регистр 0x0C: LCR --- */
+    reg {
+        name = "Line Control Register";
+        desc = "Controls data format and DLAB access.";
+        
+        field {
+            name = "Word Length Select";
+            desc = "00: 5b, 01: 6b, 10: 7b, 11: 8b. Affects RBR/THR masking.";
+            reset = 2'h3;
+        } WLS[1:0];
+
+        field {
+            name = "Parity Enable";
+            reset = 1'h0;
+        } PEN[3:3];
+
+        field {
+            name = "Divisor Latch Access Bit";
+            desc = "1: Enables access to DLL and DLM.";
+            reset = 1'h0;
+        } DLAB[7:7];
+    } LCR @ 0x0C;
+
+    /* --- Регистр 0x10: IER --- */
+    reg {
+        name = "Interrupt Enable Register";
+        field { reset = 8'h00; } DATA[7:0];
+    } IER @ 0x10;
+
+    /* --- Регистр 0x14: IIR (Read-Only) --- */
+    reg {
+        name = "Interrupt Identification Register";
+        desc = "Status of pending interrupts. Software write is ignored.";
+        default sw = r; // Только для чтения программно
+        default hw = w; // Железо пишет состояние
+        field {
+            name = "Pending";
+            desc = "0: Pending, 1: No interrupt.";
+            reset = 1'h1;
+        } TYPE[0:0];
+        field {
+            name = "ID";
+            reset = 3'h0;
+        } ID[3:1];
+    } IIR @ 0x14;
+
+    /* --- Регистр 0x18: FCR --- */
+    reg {
+        name = "FIFO Control Register";
+        desc = "Writing 1 to bit 0 enables memory logging/FIFO mode.";
+        field {
+            name = "FIFO Enable";
+            reset = 1'h0;
+        } FIFO_EN[0:0];
+    } FCR @ 0x18;
+
+    /* --- Регистр 0x1C: LSR (Read-Only) --- */
+    reg {
+        name = "Line Status Register";
+        desc = "Contains UART status. Software write is blocked.";
+        default sw = r;
+        default hw = w;
+
+        field { name = "Data Ready"; desc = "Set on byte receive, cleared on RBR read."; } DR[0:0] = 1'h0;
+        field { name = "Overrun Error"; } OE[1:1] = 1'h0;
+        field { name = "Parity Error"; }  PE[2:2] = 1'h0;
+        field { name = "Framing Error"; } FE[3:3] = 1'h0;
+        field { name = "Break Indicator"; } BI[4:4] = 1'h0;
+        field { 
+            name = "THR Empty"; 
+            desc = "1 when transmitter is ready for next byte."; 
+            reset = 1'h1; 
+        } THRE[5:5];
+        field { 
+            name = "Transmitter Empty"; 
+            desc = "1 when shift register and THR are empty."; 
+            reset = 1'h1; 
+        } TEMT[6:6];
+    } LSR @ 0x1C;
+
+    /* --- Регистр 0x20: MCR --- */
+    reg {
+        name = "Modem Control Register";
+        field { reset = 8'h00; } DATA[7:0];
+    } MCR @ 0x20;
+
+    /* --- Регистр 0x24: MSR (Read-Only) --- */
+    reg {
+        name = "Modem Status Register";
+        default sw = r;
+        default hw = w;
+        field { reset = 8'h00; } DATA[7:0];
+    } MSR @ 0x24;
+};
