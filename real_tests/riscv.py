@@ -55,6 +55,11 @@ class UARTBehavioralModel:
     def access(self, addr: int, data: int, operation: str) -> Dict[str, Any]:
         self._process_hardware()
         operation = operation.lower()
+
+        # 2. СТРОГАЯ ПРОВЕРКА АДРЕСА (Добавьте это!)
+        if addr not in self._regs:
+            return {'ack': False, 'reg_value': 0}
+
         dlab = (self._regs[3] >> 7) & 0x1
 
         if operation == 'read':

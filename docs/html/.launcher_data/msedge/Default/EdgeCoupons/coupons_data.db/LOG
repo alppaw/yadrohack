@@ -1,2 +1,6 @@
-2026/03/07-16:27:52.985 38f8 Creating DB C:\Users\aleks\Desktop\yadro\hack\docs\html\.launcher_data\msedge\Default\EdgeCoupons/coupons_data.db since it was missing.
-2026/03/07-16:27:53.002 38f8 Reusing MANIFEST C:\Users\aleks\Desktop\yadro\hack\docs\html\.launcher_data\msedge\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/03/07-16:30:35.113 1d8 Reusing MANIFEST C:\Users\aleks\Desktop\yadro\hack\docs\html\.launcher_data\msedge\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/03/07-16:30:35.114 1d8 Recovering log #3
+2026/03/07-16:30:35.115 1d8 Reusing old log C:\Users\aleks\Desktop\yadro\hack\docs\html\.launcher_data\msedge\Default\EdgeCoupons/coupons_data.db/000003.log 
+2026/03/07-16:30:36.982 2744 Level-0 table #5: started
+2026/03/07-16:30:36.988 2744 Level-0 table #5: 681631 bytes OK
+2026/03/07-16:30:36.990 2744 Delete type=0 #3

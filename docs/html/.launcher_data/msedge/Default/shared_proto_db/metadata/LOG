@@ -1,2 +1,3 @@
-2026/03/07-16:27:50.987 46c4 Creating DB C:\Users\aleks\Desktop\yadro\hack\docs\html\.launcher_data\msedge\Default\shared_proto_db\metadata since it was missing.
-2026/03/07-16:27:50.995 46c4 Reusing MANIFEST C:\Users\aleks\Desktop\yadro\hack\docs\html\.launcher_data\msedge\Default\shared_proto_db\metadata/MANIFEST-000001
+2026/03/07-16:30:33.083 2708 Reusing MANIFEST C:\Users\aleks\Desktop\yadro\hack\docs\html\.launcher_data\msedge\Default\shared_proto_db\metadata/MANIFEST-000001
+2026/03/07-16:30:33.084 2708 Recovering log #3
+2026/03/07-16:30:33.085 2708 Reusing old log C:\Users\aleks\Desktop\yadro\hack\docs\html\.launcher_data\msedge\Default\shared_proto_db\metadata/000003.log 

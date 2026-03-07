@@ -1,2 +1,5 @@
-2026/03/07-16:27:52.993 488 Creating DB C:\Users\aleks\Desktop\yadro\hack\docs\html\.launcher_data\msedge\Default\Asset Store\assets.db since it was missing.
-2026/03/07-16:27:53.019 488 Reusing MANIFEST C:\Users\aleks\Desktop\yadro\hack\docs\html\.launcher_data\msedge\Default\Asset Store\assets.db/MANIFEST-000001
+2026/03/07-16:30:35.161 f70 Reusing MANIFEST C:\Users\aleks\Desktop\yadro\hack\docs\html\.launcher_data\msedge\Default\Asset Store\assets.db/MANIFEST-000001
+2026/03/07-16:30:35.167 f70 Recovering log #3
+2026/03/07-16:30:35.169 f70 Level-0 table #3: started
+2026/03/07-16:30:35.182 f70 Level-0 table #3: 338950 bytes OK
+2026/03/07-16:30:35.189 f70 Delete type=0 #3
