@@ -3,8 +3,8 @@ import networkx as nx
 
 # Настройка страницы
 st.set_page_config(page_title="Natural Green Heatmap", layout="wide")
-st.title("Лог ошибок: Натуральная зеленая спектрограмма")
-st.write("Цветовая шкала взята из предоставленного изображения (от глубокого темного к мягкому светло-зеленому).")
+st.title("Лог ошибок в формате Heatmap",text_alignment="center")
+
 
 # 1. Исходные данные
 log_data = """
