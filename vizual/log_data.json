@@ -1,0 +1,18 @@
+[
+  {"address": "0x00", "writes": "2121", "reads": "2068", "bugs": [100, 200, 300, 400]},
+  {"address": "0x04", "writes": "2020", "reads": "2063", "bugs": [500, 600, 700, 800]},
+  {"address": "0x08", "writes": "1964", "reads": "2021", "bugs": [900, 1000, 1100, 1200]},
+  {"address": "0x0C", "writes": "1986", "reads": "2028", "bugs": [1300, 1400, 1500, 1600]},
+  {"address": "0x10", "writes": "1898", "reads": "2064", "bugs": [1700, 1800, 1900, 2000]},
+  {"address": "0x14", "writes": "2058", "reads": "2015", "bugs": [2100, 0, 0, 0]},
+  {"address": "0x18", "writes": "2031", "reads": "2118", "bugs": [0, 0, 0, 0]},
+  {"address": "0x1C", "writes": "2040", "reads": "2020", "bugs": [150, 450, 1050, 1950]},
+  {"address": "0x20", "writes": "2095", "reads": "2017", "bugs": [0, 2100, 100, 0]},
+  {"address": "0x24", "writes": "2035", "reads": "2079", "bugs": [1100, 0, 0, 2050]},
+  {"address": "0x28", "writes": "2050", "reads": "2031", "bugs": [0, 0, 0, 0]},
+  {"address": "0x2C", "writes": "2024", "reads": "1993", "bugs": [250, 750, 1250, 1750]},
+  {"address": "0x30", "writes": "2023", "reads": "2012", "bugs": [0, 0, 0, 0]},
+  {"address": "0x34", "writes": "1982", "reads": "2048", "bugs": [800, 1600, 2100, 100]},
+  {"address": "0x38", "writes": "2020", "reads": "2012", "bugs": [0, 0, 0, 0]},
+  {"address": "0x3C", "writes": "2038", "reads": "2026", "bugs": [100, 1000, 1500, 2100]}
+]
