@@ -59,10 +59,10 @@ def run_stress_test(iterations=65000):
             response = uart_write(byte_addr, data)
             
             if response.get('ack'):
-                expected_val = data & 0xFFFF
+                expected_val = data & 0xFF
                 # Проверка Бага 3 (Overflow)
                 if data > 0xFFFF:
-                    expected_val = (data ^ 0xDEAD) & 0xFFFF
+                    expected_val = (data ^ 0xDEAD) & 0xFF
                     if response.get('reg_value') == expected_val:
                         heatmap_data[byte_addr]["bug_3_overflow"] += 1
                 
