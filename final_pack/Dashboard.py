@@ -276,7 +276,7 @@ elif app_mode == "Покрытие":
                 # Запускаем pytest с модулем Покрытие
                 # ВАЖНО: Требуется установленный пакет pytest-cov
                 # Команда: python -m pytest --cov=. test_f2.py
-                cmd = [sys.executable, "-m", "pytest", "--cov=.", test_file]
+                cmd = [sys.executable, "-m", "pytest", "--cov=riscv_br", test_file]
                 
                 result = subprocess.run(
                     cmd,
