@@ -1,0 +1,22 @@
+[
+    [
+        "RESET_IDLE",
+        "DLAB_ENABLED"
+    ],
+    [
+        "DLAB_ENABLED",
+        "BAUDRATE_SET"
+    ],
+    [
+        "BAUDRATE_SET",
+        "OPERATIONAL_READY"
+    ],
+    [
+        "OPERATIONAL_READY",
+        "RO_PROTECTION_TRIGGERED"
+    ],
+    [
+        "RO_PROTECTION_TRIGGERED",
+        "OPERATIONAL_READY"
+    ]
+]
