@@ -89,7 +89,7 @@ with st.spinner('Отрисовка тепловой карты...'):
     fig.update_traces(
         customdata=hover_data,
         hovertemplate="<b>Адрес:</b> %{customdata}<extra></extra>",
-        xgap=1, 
+        xgap=1,
         ygap=1  
     )
     
