@@ -1,10 +1,3 @@
-"""
-ФИНАЛЬНЫЙ МОДУЛЬ ТЕСТИРОВАНИЯ (GOLDEN VERSION).
-Объединяет FSM-трекинг, 100% Coverage тесты и агрессивный поиск багов.
-Детектирует: Overflow (0xDEAD), Deadlock (LCR->MCR), Sticky Bit.
-+ LOGS RO DENIED (Успешные срабатывания защиты)
-+ PYTEST COVERAGE (100% покрытие модуля модели)
-"""
 
 import importlib
 import json
@@ -48,7 +41,6 @@ def setup_logging():
 DETAILS_LOGGER = setup_logging()
 
 
-# --- ЧАСТЬ 1: НАПРАВЛЕННЫЕ ТЕСТЫ (FSM & COVERAGE) ---
 
 def run_fsm_tracking():
     """
@@ -100,7 +92,6 @@ def run_fsm_tracking():
     DETAILS_LOGGER.info("Граф FSM успешно записан в fsm_transitions.json")
 
 
-# --- ЧАСТЬ 2: СТРЕСС-ТЕСТ (AGRESSIVE BUG HUNTING) ---
 
 def run_stress_test(iterations=65000):
     """
@@ -304,10 +295,6 @@ def write_final_report(heatmap_data):
 
     DETAILS_LOGGER.info("\n[!] Тест завершен. Отчет: %s", report_filename)
 
-
-# ==============================================================================
-# --- ЧАСТЬ 3: PYTEST ТЕСТЫ (COVERAGE 100%) ---
-# ==============================================================================
 
 try:
     import pytest
